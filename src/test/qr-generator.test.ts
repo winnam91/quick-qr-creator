@@ -162,7 +162,6 @@ describe("Logo settings", () => {
   });
 
   it("logo background options available", () => {
-    const { LOGO_BG_OPTIONS } = require("@/lib/qr-defaults");
     expect(LOGO_BG_OPTIONS).toHaveLength(2);
     expect(LOGO_BG_OPTIONS.map((o: any) => o.value)).toEqual(["none", "white"]);
   });
