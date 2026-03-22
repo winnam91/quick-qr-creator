@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { validateUrl, validateContent } from "@/lib/qr-validation";
-import { DEFAULT_SETTINGS } from "@/lib/qr-defaults";
+import { DEFAULT_SETTINGS, getLogoPaddingPx, getEffectiveErrorCorrection, LOGO_SIZE_OPTIONS, LOGO_SHAPE_OPTIONS, LOGO_BG_OPTIONS, type QRSettings } from "@/lib/qr-defaults";
 import { encodeContent, defaultContent, type QRContent } from "@/lib/qr-content";
 
 describe("URL validation", () => {
@@ -113,5 +113,56 @@ describe("Default content", () => {
   it("wifi default has WPA security", () => {
     const c = defaultContent("wifi");
     expect((c as any).security).toBe("WPA");
+  });
+});
+
+describe("Logo settings", () => {
+  const withLogo: QRSettings = { ...DEFAULT_SETTINGS, logoDataUrl: "data:image/png;base64,abc" };
+
+  it("has correct new defaults", () => {
+    expect(DEFAULT_SETTINGS.logoShape).toBe("square");
+    expect(DEFAULT_SETTINGS.logoPadding).toBe("standard");
+    expect(DEFAULT_SETTINGS.logoBg).toBe("white");
+  });
+
+  it("extra large size option exists at 30%", () => {
+    const xl = LOGO_SIZE_OPTIONS.find((o: any) => o.value === 30);
+    expect(xl).toBeDefined();
+    expect(xl.label).toContain("Extra Large");
+  });
+
+  it("getLogoPaddingPx returns 0 for none", () => {
+    expect(getLogoPaddingPx("none", 100)).toBe(0);
+  });
+
+  it("getLogoPaddingPx returns small value", () => {
+    expect(getLogoPaddingPx("small", 100)).toBe(8);
+  });
+
+  it("getLogoPaddingPx returns standard value", () => {
+    expect(getLogoPaddingPx("standard", 100)).toBe(16);
+  });
+
+  it("getLogoPaddingPx returns large value", () => {
+    expect(getLogoPaddingPx("large", 100)).toBe(28);
+  });
+
+  it("enforces error correction H when logo present", () => {
+    expect(getEffectiveErrorCorrection({ ...withLogo, errorCorrection: "L" })).toBe("H");
+    expect(getEffectiveErrorCorrection({ ...withLogo, errorCorrection: "M" })).toBe("H");
+  });
+
+  it("does not enforce H when no logo", () => {
+    expect(getEffectiveErrorCorrection({ ...DEFAULT_SETTINGS, errorCorrection: "L" })).toBe("L");
+  });
+
+  it("square and circle shape options available", () => {
+    expect(LOGO_SHAPE_OPTIONS).toHaveLength(2);
+    expect(LOGO_SHAPE_OPTIONS.map((o: any) => o.value)).toEqual(["square", "circle"]);
+  });
+
+  it("logo background options available", () => {
+    expect(LOGO_BG_OPTIONS).toHaveLength(2);
+    expect(LOGO_BG_OPTIONS.map((o: any) => o.value)).toEqual(["none", "white"]);
   });
 });

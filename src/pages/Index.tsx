@@ -61,8 +61,14 @@ export default function Index() {
               <LogoUpload
                 logoDataUrl={settings.logoDataUrl}
                 logoSize={settings.logoSize}
+                logoShape={settings.logoShape}
+                logoPadding={settings.logoPadding}
+                logoBg={settings.logoBg}
                 onLogoChange={(dataUrl) => updateSettings({ logoDataUrl: dataUrl })}
                 onSizeChange={(size) => updateSettings({ logoSize: size })}
+                onShapeChange={(shape) => updateSettings({ logoShape: shape })}
+                onPaddingChange={(p) => updateSettings({ logoPadding: p })}
+                onBgChange={(bg) => updateSettings({ logoBg: bg })}
               />
               <div>
                 <p className="section-label">Actions</p>

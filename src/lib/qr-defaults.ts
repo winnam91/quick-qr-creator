@@ -1,4 +1,7 @@
 export type ErrorCorrectionLevel = "L" | "M" | "Q" | "H";
+export type LogoShape = "square" | "circle";
+export type LogoPadding = "none" | "small" | "standard" | "large";
+export type LogoBg = "white" | "none";
 
 export interface QRSettings {
   size: number;
@@ -9,6 +12,9 @@ export interface QRSettings {
   errorCorrection: ErrorCorrectionLevel;
   logoDataUrl: string | null;
   logoSize: number;
+  logoShape: LogoShape;
+  logoPadding: LogoPadding;
+  logoBg: LogoBg;
 }
 
 export const DEFAULT_SETTINGS: QRSettings = {
@@ -20,6 +26,9 @@ export const DEFAULT_SETTINGS: QRSettings = {
   errorCorrection: "M",
   logoDataUrl: null,
   logoSize: 20,
+  logoShape: "square",
+  logoPadding: "standard",
+  logoBg: "white",
 };
 
 export const SIZE_OPTIONS = [
@@ -47,7 +56,35 @@ export const LOGO_SIZE_OPTIONS = [
   { label: "Small (15%)", value: 15 },
   { label: "Medium (20%)", value: 20 },
   { label: "Large (25%)", value: 25 },
+  { label: "Extra Large (30%)", value: 30 },
 ];
+
+export const LOGO_SHAPE_OPTIONS: { label: string; value: LogoShape }[] = [
+  { label: "Square", value: "square" },
+  { label: "Circle", value: "circle" },
+];
+
+export const LOGO_PADDING_OPTIONS: { label: string; value: LogoPadding }[] = [
+  { label: "None", value: "none" },
+  { label: "Small", value: "small" },
+  { label: "Standard", value: "standard" },
+  { label: "Large", value: "large" },
+];
+
+export const LOGO_BG_OPTIONS: { label: string; value: LogoBg }[] = [
+  { label: "None", value: "none" },
+  { label: "White", value: "white" },
+];
+
+/** Padding multiplier relative to logo dimension */
+export function getLogoPaddingPx(padding: LogoPadding, logoW: number): number {
+  switch (padding) {
+    case "none": return 0;
+    case "small": return Math.round(logoW * 0.08);
+    case "standard": return Math.round(logoW * 0.16);
+    case "large": return Math.round(logoW * 0.28);
+  }
+}
 
 /** When a logo is present, enforce at least this error correction level */
 export function getEffectiveErrorCorrection(settings: QRSettings): ErrorCorrectionLevel {

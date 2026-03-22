@@ -3,16 +3,41 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Upload, X, AlertTriangle } from "lucide-react";
 import { useRef, useCallback } from "react";
-import { LOGO_SIZE_OPTIONS } from "@/lib/qr-defaults";
+import {
+  LOGO_SIZE_OPTIONS,
+  LOGO_SHAPE_OPTIONS,
+  LOGO_PADDING_OPTIONS,
+  LOGO_BG_OPTIONS,
+  type LogoShape,
+  type LogoPadding,
+  type LogoBg,
+} from "@/lib/qr-defaults";
 
 interface LogoUploadProps {
   logoDataUrl: string | null;
   logoSize: number;
+  logoShape: LogoShape;
+  logoPadding: LogoPadding;
+  logoBg: LogoBg;
   onLogoChange: (dataUrl: string | null) => void;
   onSizeChange: (size: number) => void;
+  onShapeChange: (shape: LogoShape) => void;
+  onPaddingChange: (padding: LogoPadding) => void;
+  onBgChange: (bg: LogoBg) => void;
 }
 
-export function LogoUpload({ logoDataUrl, logoSize, onLogoChange, onSizeChange }: LogoUploadProps) {
+export function LogoUpload({
+  logoDataUrl,
+  logoSize,
+  logoShape,
+  logoPadding,
+  logoBg,
+  onLogoChange,
+  onSizeChange,
+  onShapeChange,
+  onPaddingChange,
+  onBgChange,
+}: LogoUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,26 +80,68 @@ export function LogoUpload({ logoDataUrl, logoSize, onLogoChange, onSizeChange }
         )}
 
         {logoDataUrl && (
-          <div className="control-group">
-            <Label htmlFor="logo-size" className="control-label">Logo size</Label>
-            <Select value={String(logoSize)} onValueChange={(v) => onSizeChange(Number(v))}>
-              <SelectTrigger id="logo-size">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {LOGO_SIZE_OPTIONS.map((o) => (
-                  <SelectItem key={o.value} value={String(o.value)}>{o.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
+          <>
+            <div className="control-group">
+              <Label htmlFor="logo-size" className="control-label">Logo size</Label>
+              <Select value={String(logoSize)} onValueChange={(v) => onSizeChange(Number(v))}>
+                <SelectTrigger id="logo-size">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {LOGO_SIZE_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={String(o.value)}>{o.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-        {logoDataUrl && (
-          <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted rounded-md p-2.5">
-            <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-            <span>Error correction is set to H (highest) when a logo is present to ensure scan reliability.</span>
-          </div>
+            <div className="control-group">
+              <Label htmlFor="logo-shape" className="control-label">Logo container shape</Label>
+              <Select value={logoShape} onValueChange={(v) => onShapeChange(v as LogoShape)}>
+                <SelectTrigger id="logo-shape">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {LOGO_SHAPE_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="control-group">
+              <Label htmlFor="logo-padding" className="control-label">Logo padding</Label>
+              <Select value={logoPadding} onValueChange={(v) => onPaddingChange(v as LogoPadding)}>
+                <SelectTrigger id="logo-padding">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {LOGO_PADDING_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="control-group">
+              <Label htmlFor="logo-bg" className="control-label">Logo background</Label>
+              <Select value={logoBg} onValueChange={(v) => onBgChange(v as LogoBg)}>
+                <SelectTrigger id="logo-bg">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {LOGO_BG_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted rounded-md p-2.5">
+              <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+              <span>Error correction is set to H (highest) when a logo is present to ensure scan reliability.</span>
+            </div>
+          </>
         )}
       </div>
     </div>
