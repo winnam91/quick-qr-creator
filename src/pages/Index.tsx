@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
@@ -7,7 +7,7 @@ import { ContentForm } from "@/components/ContentForm";
 import { CopyActions } from "@/components/CopyActions";
 import { CustomizationControls } from "@/components/CustomizationControls";
 import { LogoUpload } from "@/components/LogoUpload";
-import { QRPreview, type QRPreviewHandle } from "@/components/QRPreview";
+import { QRPreview } from "@/components/QRPreview";
 import { DownloadActions } from "@/components/DownloadActions";
 import { CopyQRAction } from "@/components/CopyQRAction";
 import { DEFAULT_SETTINGS, type QRSettings } from "@/lib/qr-defaults";
@@ -18,7 +18,7 @@ import { downloadPng, downloadSvg } from "@/lib/qr-download";
 export default function Index() {
   const [settings, setSettings] = useState<QRSettings>({ ...DEFAULT_SETTINGS });
   const [content, setContent] = useState<QRContent>(defaultContent("website"));
-  const previewRef = useRef<QRPreviewHandle>(null);
+  
 
   const { valid: isValid } = validateContent(content);
   const encodedValue = isValid ? encodeContent(content) : "";
@@ -36,7 +36,7 @@ export default function Index() {
     setContent(defaultContent("website"));
   }, []);
 
-  const getCanvas = useCallback(() => previewRef.current?.getCanvas() ?? null, []);
+  
 
   return (
     <div className="min-h-screen bg-background">
@@ -90,14 +90,14 @@ export default function Index() {
               <CardContent className="p-6 space-y-6">
                 <div>
                   <p className="section-label">Preview</p>
-                  <QRPreview ref={previewRef} encodedValue={encodedValue} settings={settings} isValid={isValid} />
+                  <QRPreview encodedValue={encodedValue} settings={settings} isValid={isValid} />
                 </div>
                 <DownloadActions
                   disabled={!isValid}
                   onDownloadPng={() => downloadPng(encodedValue, settings)}
                   onDownloadSvg={() => downloadSvg(encodedValue, settings)}
                 />
-                <CopyQRAction getCanvas={getCanvas} disabled={!isValid} />
+                <CopyQRAction encodedValue={encodedValue} settings={settings} disabled={!isValid} />
               </CardContent>
             </Card>
           </div>
