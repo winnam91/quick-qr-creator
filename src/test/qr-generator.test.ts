@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { validateUrl, validateContent } from "@/lib/qr-validation";
-import { DEFAULT_SETTINGS, getLogoPaddingPx, getEffectiveErrorCorrection, type QRSettings } from "@/lib/qr-defaults";
+import { DEFAULT_SETTINGS, getLogoPaddingPx, getEffectiveErrorCorrection, LOGO_SIZE_OPTIONS, LOGO_SHAPE_OPTIONS, LOGO_BG_OPTIONS, type QRSettings } from "@/lib/qr-defaults";
 import { encodeContent, defaultContent, type QRContent } from "@/lib/qr-content";
 
 describe("URL validation", () => {
