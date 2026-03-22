@@ -90,7 +90,7 @@ export default function Index() {
               <CardContent className="p-6 space-y-6">
                 <div>
                   <p className="section-label">Preview</p>
-                  <QRPreview ref={previewRef} encodedValue={encodedValue} settings={settings} isValid={isValid} />
+                  <QRPreview encodedValue={encodedValue} settings={settings} isValid={isValid} />
                 </div>
                 <DownloadActions
                   disabled={!isValid}
