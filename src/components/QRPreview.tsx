@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, forwardRef, useImperativeHandle, useState } from "react";
 import QRCode from "qrcode";
 import type { QRSettings } from "@/lib/qr-defaults";
-import { getEffectiveErrorCorrection } from "@/lib/qr-defaults";
+import { getEffectiveErrorCorrection, getLogoPaddingPx } from "@/lib/qr-defaults";
 import { QrCode } from "lucide-react";
 
 interface QRPreviewProps {
@@ -12,6 +12,60 @@ interface QRPreviewProps {
 
 export interface QRPreviewHandle {
   getCanvas: () => HTMLCanvasElement | null;
+}
+
+function drawLogoOnCanvas(canvas: HTMLCanvasElement, settings: QRSettings) {
+  if (!settings.logoDataUrl) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  const img = new Image();
+  img.onload = () => {
+    const logoRatio = settings.logoSize / 100;
+    const logoW = canvas.width * logoRatio;
+    const logoH = canvas.height * logoRatio;
+    const pad = getLogoPaddingPx(settings.logoPadding, logoW);
+    const containerW = logoW + pad * 2;
+    const containerH = logoH + pad * 2;
+    const cx = (canvas.width - containerW) / 2;
+    const cy = (canvas.height - containerH) / 2;
+
+    if (settings.logoBg === "white") {
+      ctx.save();
+      if (settings.logoShape === "circle") {
+        ctx.beginPath();
+        ctx.arc(canvas.width / 2, canvas.height / 2, containerW / 2, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.clip();
+      } else {
+        const r = Math.round(containerW * 0.08);
+        ctx.beginPath();
+        ctx.roundRect(cx, cy, containerW, containerH, r);
+        ctx.closePath();
+        ctx.clip();
+      }
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(cx, cy, containerW, containerH);
+      ctx.restore();
+    }
+
+    // Clip logo to shape if circle
+    if (settings.logoShape === "circle") {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, canvas.height / 2, logoW / 2, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.clip();
+    }
+
+    const lx = (canvas.width - logoW) / 2;
+    const ly = (canvas.height - logoH) / 2;
+    ctx.drawImage(img, lx, ly, logoW, logoH);
+
+    if (settings.logoShape === "circle") {
+      ctx.restore();
+    }
+  };
+  img.src = settings.logoDataUrl;
 }
 
 export const QRPreview = forwardRef<QRPreviewHandle, QRPreviewProps>(
@@ -36,27 +90,7 @@ export const QRPreview = forwardRef<QRPreviewHandle, QRPreviewProps>(
             light: settings.transparentBg ? "#00000000" : settings.bgColor,
           },
         });
-
-        // Draw logo if present
-        if (settings.logoDataUrl) {
-          const ctx = canvasRef.current.getContext("2d");
-          if (ctx) {
-            const img = new Image();
-            img.onload = () => {
-              const canvas = canvasRef.current!;
-              const logoRatio = settings.logoSize / 100;
-              const logoW = canvas.width * logoRatio;
-              const logoH = canvas.height * logoRatio;
-              const x = (canvas.width - logoW) / 2;
-              const y = (canvas.height - logoH) / 2;
-              const pad = 4;
-              ctx.fillStyle = settings.transparentBg ? "#ffffff" : settings.bgColor;
-              ctx.fillRect(x - pad, y - pad, logoW + pad * 2, logoH + pad * 2);
-              ctx.drawImage(img, x, y, logoW, logoH);
-            };
-            img.src = settings.logoDataUrl;
-          }
-        }
+        drawLogoOnCanvas(canvasRef.current, settings);
         setError(false);
       } catch {
         setError(true);
