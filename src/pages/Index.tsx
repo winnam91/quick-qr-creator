@@ -57,8 +57,8 @@ export default function Index() {
             </CardContent>
           </Card>
 
-          {/* Right: Preview + Download */}
-          <div className="flex flex-col gap-6 lg:sticky lg:top-8 fade-in" style={{ animationDelay: "160ms" }}>
+          {/* Right: Preview + Download — on mobile, shows after URL input area */}
+          <div className="flex flex-col gap-6 lg:sticky lg:top-8 fade-in order-2 lg:order-2" style={{ animationDelay: "160ms" }}>
             <Card className="shadow-sm">
               <CardContent className="p-6 space-y-6">
                 <div>
