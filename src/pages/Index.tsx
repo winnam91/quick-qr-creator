@@ -18,7 +18,7 @@ import { downloadPng, downloadSvg } from "@/lib/qr-download";
 export default function Index() {
   const [settings, setSettings] = useState<QRSettings>({ ...DEFAULT_SETTINGS });
   const [content, setContent] = useState<QRContent>(defaultContent("website"));
-  const previewRef = useRef<QRPreviewHandle>(null);
+  
 
   const { valid: isValid } = validateContent(content);
   const encodedValue = isValid ? encodeContent(content) : "";
