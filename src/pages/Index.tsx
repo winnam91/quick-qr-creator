@@ -38,8 +38,8 @@ export default function Index() {
       {/* Main shell */}
       <main className="max-w-4xl mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-6 items-start">
-          {/* Left: Controls */}
-          <Card className="shadow-sm fade-in" style={{ animationDelay: "80ms" }}>
+          {/* Left: Controls — on mobile, URL first then controls after preview */}
+          <Card className="shadow-sm fade-in order-1 lg:order-1" style={{ animationDelay: "80ms" }}>
             <CardContent className="p-6 space-y-8">
               <URLInput url={settings.url} onChange={(url) => update({ url })} />
               <CustomizationControls settings={settings} onChange={update} />
