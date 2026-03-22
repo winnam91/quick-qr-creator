@@ -36,7 +36,7 @@ export default function Index() {
     setContent(defaultContent("website"));
   }, []);
 
-  const getCanvas = useCallback(() => previewRef.current?.getCanvas() ?? null, []);
+  
 
   return (
     <div className="min-h-screen bg-background">
