@@ -157,7 +157,6 @@ describe("Logo settings", () => {
   });
 
   it("square and circle shape options available", () => {
-    const { LOGO_SHAPE_OPTIONS } = require("@/lib/qr-defaults");
     expect(LOGO_SHAPE_OPTIONS).toHaveLength(2);
     expect(LOGO_SHAPE_OPTIONS.map((o: any) => o.value)).toEqual(["square", "circle"]);
   });
