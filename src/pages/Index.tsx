@@ -36,14 +36,7 @@ export default function Index() {
     setContent(defaultContent("website"));
   }, []);
 
-  const canvasRefForCopy = useRef<HTMLCanvasElement>(null);
-
-  // Keep canvasRefForCopy in sync with the preview's internal canvas
-  const getCanvasRef = useCallback(() => {
-    const canvas = previewRef.current?.getCanvas() ?? null;
-    (canvasRefForCopy as React.MutableRefObject<HTMLCanvasElement | null>).current = canvas;
-    return canvasRefForCopy;
-  }, []);
+  const getCanvas = useCallback(() => previewRef.current?.getCanvas() ?? null, []);
 
   return (
     <div className="min-h-screen bg-background">
