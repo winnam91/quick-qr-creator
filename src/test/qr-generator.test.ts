@@ -126,7 +126,6 @@ describe("Logo settings", () => {
   });
 
   it("extra large size option exists at 30%", () => {
-    const { LOGO_SIZE_OPTIONS } = require("@/lib/qr-defaults");
     const xl = LOGO_SIZE_OPTIONS.find((o: any) => o.value === 30);
     expect(xl).toBeDefined();
     expect(xl.label).toContain("Extra Large");
