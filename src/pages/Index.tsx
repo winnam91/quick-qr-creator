@@ -7,7 +7,7 @@ import { ContentForm } from "@/components/ContentForm";
 import { CopyActions } from "@/components/CopyActions";
 import { CustomizationControls } from "@/components/CustomizationControls";
 import { LogoUpload } from "@/components/LogoUpload";
-import { QRPreview, type QRPreviewHandle } from "@/components/QRPreview";
+import { QRPreview } from "@/components/QRPreview";
 import { DownloadActions } from "@/components/DownloadActions";
 import { CopyQRAction } from "@/components/CopyQRAction";
 import { DEFAULT_SETTINGS, type QRSettings } from "@/lib/qr-defaults";
