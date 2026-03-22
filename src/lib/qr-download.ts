@@ -72,10 +72,15 @@ async function drawLogo(canvas: HTMLCanvasElement, settings: QRSettings): Promis
   });
 }
 
-export async function downloadPng(encodedValue: string, settings: QRSettings) {
+export async function renderFullCanvas(encodedValue: string, settings: QRSettings): Promise<HTMLCanvasElement> {
   const canvas = document.createElement("canvas");
   await QRCode.toCanvas(canvas, encodedValue, getQROptions(settings));
   await drawLogo(canvas, settings);
+  return canvas;
+}
+
+export async function downloadPng(encodedValue: string, settings: QRSettings) {
+  const canvas = await renderFullCanvas(encodedValue, settings);
   const link = document.createElement("a");
   link.download = "qrcode.png";
   link.href = canvas.toDataURL("image/png");
