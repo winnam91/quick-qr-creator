@@ -158,6 +158,7 @@ export async function downloadSvg(encodedValue: string, settings: QRSettings) {
     image.setAttribute("width", String(lw));
     image.setAttribute("height", String(lh));
     image.setAttribute("href", settings.logoDataUrl);
+    image.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", settings.logoDataUrl);
     image.setAttribute("clip-path", `url(#${clipId})`);
     svg.appendChild(image);
 
