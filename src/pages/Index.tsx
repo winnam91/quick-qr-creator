@@ -91,7 +91,7 @@ export default function Index() {
                   onDownloadPng={() => downloadPng(encodedValue, settings)}
                   onDownloadSvg={() => downloadSvg(encodedValue, settings)}
                 />
-                <CopyQRAction canvasRef={canvasRef} disabled={!isValid} />
+                <CopyQRAction getCanvas={getCanvas} disabled={!isValid} />
               </CardContent>
             </Card>
           </div>
