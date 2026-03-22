@@ -97,8 +97,19 @@ export async function downloadSvg(encodedValue: string, settings: QRSettings) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(svgString, "image/svg+xml");
     const svg = doc.documentElement;
-    const w = parseFloat(svg.getAttribute("width") || "256");
-    const h = parseFloat(svg.getAttribute("height") || "256");
+
+    // Use viewBox dimensions (the actual coordinate system) instead of width/height
+    let w: number, h: number;
+    const viewBox = svg.getAttribute("viewBox");
+    if (viewBox) {
+      const parts = viewBox.split(/\s+|,/).map(Number);
+      w = parts[2];
+      h = parts[3];
+    } else {
+      w = parseFloat(svg.getAttribute("width") || "256");
+      h = parseFloat(svg.getAttribute("height") || "256");
+    }
+
     const logoRatio = settings.logoSize / 100;
     const lw = w * logoRatio;
     const lh = h * logoRatio;
