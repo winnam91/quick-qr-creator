@@ -10,6 +10,13 @@ import { LogoUpload } from "@/components/LogoUpload";
 import { QRPreview } from "@/components/QRPreview";
 import { DownloadActions } from "@/components/DownloadActions";
 import { CopyQRAction } from "@/components/CopyQRAction";
+import { TrustBar } from "@/components/landing/TrustBar";
+import { SupportedTypes } from "@/components/landing/SupportedTypes";
+import { WhyStatic } from "@/components/landing/WhyStatic";
+import { PngVsSvg } from "@/components/landing/PngVsSvg";
+import { LogoReliability } from "@/components/landing/LogoReliability";
+import { Faq } from "@/components/landing/Faq";
+import { FinalCta } from "@/components/landing/FinalCta";
 import { DEFAULT_SETTINGS, type QRSettings } from "@/lib/qr-defaults";
 import { defaultContent, encodeContent, type QRContent, type ContentType } from "@/lib/qr-content";
 import { validateContent } from "@/lib/qr-validation";
@@ -18,7 +25,6 @@ import { downloadPng, downloadSvg } from "@/lib/qr-download";
 export default function Index() {
   const [settings, setSettings] = useState<QRSettings>({ ...DEFAULT_SETTINGS });
   const [content, setContent] = useState<QRContent>(defaultContent("website"));
-  
 
   const { valid: isValid } = validateContent(content);
   const encodedValue = isValid ? encodeContent(content) : "";
@@ -36,20 +42,32 @@ export default function Index() {
     setContent(defaultContent("website"));
   }, []);
 
-  
-
   return (
     <div className="min-h-screen bg-background">
-      <header className="pt-12 pb-8 px-4 text-center fade-in">
-        <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight">
-          Static QR Code Generator
+      {/* Hero */}
+      <header className="pt-14 pb-2 px-4 text-center fade-in max-w-3xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight">
+          Free Static QR Code Generator
         </h1>
-        <p className="mt-2 text-muted-foreground text-base max-w-md mx-auto">
-          Create and download a clean static QR code from any valid link.
+        <p className="mt-3 text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          Create static QR codes for websites, phone numbers, emails, Wi-Fi networks, and plain text. Add a logo, customise colors, and download as PNG or SVG — no sign-up needed. Everything runs client-side in your browser for complete privacy.
         </p>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 pb-16">
+      {/* Trust bar */}
+      <div className="max-w-3xl mx-auto px-4 fade-in" style={{ animationDelay: "40ms" }}>
+        <TrustBar />
+      </div>
+
+      {/* Generator */}
+      <main id="qr-generator" className="max-w-4xl mx-auto px-4 pb-8 scroll-mt-8">
+        <div className="text-center mb-6 fade-in" style={{ animationDelay: "60ms" }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Create your QR code in seconds</h2>
+          <p className="mt-2 text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
+            Choose a content type, enter your details, customise the appearance, add an optional logo, and download your QR code as PNG or SVG — instantly.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-6 items-start">
           {/* Left: Controls */}
           <Card className="shadow-sm fade-in order-1 lg:order-1" style={{ animationDelay: "80ms" }}>
@@ -103,6 +121,16 @@ export default function Index() {
           </div>
         </div>
       </main>
+
+      {/* SEO content sections */}
+      <div className="max-w-4xl mx-auto px-4 pb-20 space-y-20">
+        <SupportedTypes />
+        <WhyStatic />
+        <PngVsSvg />
+        <LogoReliability />
+        <Faq />
+        <FinalCta />
+      </div>
     </div>
   );
 }
