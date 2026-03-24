@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
+Sitemap: https://www.free-static-qr-code.com/sitemap.xml
